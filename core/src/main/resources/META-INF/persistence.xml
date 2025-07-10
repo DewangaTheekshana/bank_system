@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
+    <persistence-unit name="BANK_UN" transaction-type="JTA">
+        <jta-data-source>j2ee-bank-system</jta-data-source>
+        <class>lk.jiat.app.core.model.Customer</class>
+        <class>lk.jiat.app.core.model.User</class>
+        <class>lk.jiat.app.core.model.Account</class>
+        <class>lk.jiat.app.core.model.Audit</class>
+        <class>lk.jiat.app.core.model.Interest_Accrual</class>
+        <class>lk.jiat.app.core.model.Scheduled_Transaction</class>
+        <class>lk.jiat.app.core.model.Transaction</class>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <properties>
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.sharedCache.mode" value="NONE"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>
