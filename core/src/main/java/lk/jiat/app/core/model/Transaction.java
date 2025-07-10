@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Cacheable(false)
 @NamedQueries({
         @NamedQuery(name = "Transaction.findByCustomerId", query = "select t from Transaction t where t.account.customer.id =:customerId OR t.relatedAccount.customer.id =:customerId"),
-        @NamedQuery(name = "Transaction.findByAccountId", query = "SELECT t FROM Transaction t WHERE t.account.id = :accountId OR t.relatedAccount.id = :accountId AND t.account.customer.email = :email")
+        @NamedQuery(name = "Transaction.findByAccountId", query = "SELECT t FROM Transaction t WHERE (t.account.id = :accountId AND t.account.customer.email = :email) OR (t.relatedAccount.id = :accountId AND t.relatedAccount.customer.email = :email) ORDER BY t.id")
 })
 public class Transaction implements Serializable {
     @Id

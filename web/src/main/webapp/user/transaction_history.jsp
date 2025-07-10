@@ -24,7 +24,6 @@
 
 
     <c:if test="${empty param.accountId}">
-        <p style="color:red;">No account selected.</p>
         <%
             response.sendRedirect(request.getContextPath() + "/user");
         %>
@@ -33,8 +32,9 @@
     <%
         String accountIdStr = request.getParameter("accountId");
         Long accountId = null;
-        if (accountIdStr != null && !accountIdStr.isEmpty()) {
+        if (accountIdStr != null) {
             accountId = Long.parseLong(accountIdStr);
+            pageContext.setAttribute("selectedAccountId", accountId);
         }
     %>
 
@@ -70,6 +70,14 @@
                         ${transaction.relatedAccount.customer.firstName}
                         ${transaction.relatedAccount.customer.lastName}
                 </p>
+                <c:choose>
+                    <c:when test="${transaction.account.id == selectedAccountId}">
+                        <p style="color: green">Credited</p>
+                    </c:when>
+                    <c:otherwise>
+                        <p style="color: red">Debited</p>
+                    </c:otherwise>
+                </c:choose>
                 <hr>
             </c:forEach>
         </c:when>

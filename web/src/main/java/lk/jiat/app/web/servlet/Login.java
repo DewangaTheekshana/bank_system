@@ -46,8 +46,10 @@ public class Login extends HttpServlet {
             User user = userService.getUserByEmail(email);
 
             if (user.getUserType() == UserType.ADMIN){
+                request.getSession().setAttribute("admin", user);
                 response.sendRedirect(request.getContextPath() + "/admin/index.jsp");
             }else if (user.getUserType() == UserType.USER) {
+                request.getSession().setAttribute("user", user);
                 response.sendRedirect(request.getContextPath() + "/user/index.jsp");
             } else {
                 throw new LoginFailedException("Invalid User Role");

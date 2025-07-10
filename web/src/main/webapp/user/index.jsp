@@ -20,7 +20,7 @@
 <body>
 
 <c:if test="${not empty pageContext.request.userPrincipal}">
-    <h1>Welcome, ${pageContext.request.userPrincipal.name}</h1>
+    <h1>Welcome, <% request.getSession().getAttribute("userb") %></h1>
 
     <%--        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">--%>
     <%--            <h2>Your role is: <strong>ADMIN</strong></h2>--%>
@@ -68,38 +68,31 @@
                 </c:otherwise>
             </c:choose>
 
-            <a style="
-                    cursor: pointer;
-                    outline: 0;
-                    display: inline-block;
-                    font-weight: 400;
-                    line-height: 1.5;
-                    text-align: center;
-                    background-color: transparent;
-                    border: 1px solid transparent;
-                    padding: 6px 12px;
-                    font-size: 1rem;
-                    border-radius: .25rem;
-                    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-                    color: #0d6efd;
-                    border-color: #0d6efd;
-                    :hover {
-                        color: #fff;
-                        background-color: #0d6efd;
-                        border-color: #0d6efd;
-                    }
-                " href="${pageContext.request.contextPath}/user/transaction_history.jsp?accountId=${account.id}">View Transactions</a>
+            <c:choose>
+                <c:when test="${account.accountType eq 'SAVING'}">
+                    <form action="${pageContext.request.contextPath}/user/transaction_history.jsp" method="post" style="display:inline;">
+                        <input type="hidden" name="accountId" value="${account.id}">
+                        <button type="submit" style="
+        cursor: pointer;
+        outline: 0;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 1rem;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        color: #0d6efd;
+        border-color: #0d6efd;
+    ">
+                            View Transactions
+                        </button>
+                    </form>
 
-            <hr>
-        </c:forEach>
-    </c:when>
-    <c:otherwise>
-        <p>No accounts found for this user.</p>
-    </c:otherwise>
-</c:choose>
-
-
-<a style="
+                    <a style="
                     cursor: pointer;
                     outline: 0;
                     display: inline-block;
@@ -120,6 +113,39 @@
                         border-color: #0d6efd;
                     }
                 " href="${pageContext.request.contextPath}/user/money_transfer.jsp">Money Transfer</a>
+                </c:when>
+                <c:otherwise>
+                    <form action="${pageContext.request.contextPath}/user/fixed_deposit.jsp" method="post" style="display:inline;">
+                        <input type="hidden" name="accountId" value="${account.id}">
+                        <button type="submit" style="
+        cursor: pointer;
+        outline: 0;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 1rem;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        color: #0d6efd;
+        border-color: #0d6efd;
+    ">
+                            View Fixed Deposit Details
+                        </button>
+                    </form>
+                </c:otherwise>
+            </c:choose>
+
+            <hr>
+        </c:forEach>
+    </c:when>
+    <c:otherwise>
+        <p>No accounts found for this user.</p>
+    </c:otherwise>
+</c:choose>
 
 </body>
 </html>
