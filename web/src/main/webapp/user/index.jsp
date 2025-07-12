@@ -4,6 +4,7 @@
 <%@ page import="lk.jiat.app.core.model.Account" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lk.jiat.app.core.model.User" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -19,17 +20,18 @@
 </head>
 <body>
 
-<c:if test="${not empty pageContext.request.userPrincipal}">
-    <h1>Welcome, <% request.getSession().getAttribute("userb") %></h1>
 
-    <%--        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">--%>
-    <%--            <h2>Your role is: <strong>ADMIN</strong></h2>--%>
-    <%--        </c:if>--%>
-    <%--        <c:if test="${pageContext.request.isUserInRole('USER')}">--%>
-    <%--            <h2>Your role is: <strong>USER</strong></h2>--%>
-    <%--        </c:if>--%>
-
-    <a href="${pageContext.request.contextPath}/logout">Logout</a>
+<c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+    <c:if test="${not empty pageContext.request.userPrincipal}">
+        <h1>Welcome, ${sessionScope.admin.username}</h1>
+        <a href="${pageContext.request.contextPath}/logout">Logout</a>
+    </c:if>
+</c:if>
+<c:if test="${pageContext.request.isUserInRole('USER')}">
+    <c:if test="${not empty pageContext.request.userPrincipal}">
+        <h1>Welcome, ${sessionScope.user.username}</h1>
+        <a href="${pageContext.request.contextPath}/logout">Logout</a>
+    </c:if>
 </c:if>
 
 
@@ -70,7 +72,8 @@
 
             <c:choose>
                 <c:when test="${account.accountType eq 'SAVING'}">
-                    <form action="${pageContext.request.contextPath}/user/transaction_history.jsp" method="post" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/user/transaction_history.jsp" method="post"
+                          style="display:inline;">
                         <input type="hidden" name="accountId" value="${account.id}">
                         <button type="submit" style="
         cursor: pointer;
@@ -115,7 +118,8 @@
                 " href="${pageContext.request.contextPath}/user/money_transfer.jsp">Money Transfer</a>
                 </c:when>
                 <c:otherwise>
-                    <form action="${pageContext.request.contextPath}/user/fixed_deposit.jsp" method="post" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/user/fixed_deposit.jsp" method="post"
+                          style="display:inline;">
                         <input type="hidden" name="accountId" value="${account.id}">
                         <button type="submit" style="
         cursor: pointer;

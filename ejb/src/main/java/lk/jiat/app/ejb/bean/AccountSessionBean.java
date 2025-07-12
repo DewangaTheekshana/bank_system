@@ -20,7 +20,7 @@ public class AccountSessionBean implements AccountService {
 
 
     @Override
-    public Optional<Account> getAccountById(int id) {
+    public Optional<Account> getAccountById(Long id) {
         return Optional.ofNullable(em.find(Account.class, id));
     }
 
@@ -35,6 +35,16 @@ public class AccountSessionBean implements AccountService {
             return Optional.empty();
         }
 
+    }
+
+    @Override
+    public Account getAccountByAccountIdAndEmailAndAccountType(Long accountId, String email, String accountType) {
+        try {
+            return em.createNamedQuery("Account.findByAccountIdAndEmailAndAccountType", Account.class).setParameter("accountId", accountId).setParameter("email", email).setParameter("accountType", accountType).getSingleResult();
+
+        }catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

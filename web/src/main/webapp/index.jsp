@@ -7,27 +7,12 @@
 <body>
 <h1>Welcome,</h1>
 
-<c:choose>
-    <c:when test="${empty pageContext.request.userPrincipal}">
-        <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
-    </c:when>
-
-    <c:otherwise>
-        <c:choose>
-            <c:when test="${pageContext.request.isUserInRole('ADMIN')}">
-                <c:redirect url="/admin/index.jsp"/>
-            </c:when>
-
-            <c:when test="${pageContext.request.isUserInRole('USER')}">
-                <c:redirect url="/user/index.jsp"/>
-            </c:when>
-
-            <c:otherwise>
-                <p>Invalid user role. Please contact support.</p>
-            </c:otherwise>
-        </c:choose>
-    </c:otherwise>
-</c:choose>
+<c:if test="${empty pageContext.request.userPrincipal}">
+    <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
+</c:if>
+<c:if test="${not empty pageContext.request.userPrincipal}">
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
+</c:if>
 
 </body>
 </html>

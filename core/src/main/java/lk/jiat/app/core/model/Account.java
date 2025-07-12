@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NamedQueries({
         @NamedQuery(name = "Account.findByAccountNumber", query = "select a from Account a where a.accountNumber =:accountNumber"),
         @NamedQuery(name = "Account.findByAccountType", query = "select a from Account a where a.accountType =:accountType"),
+        @NamedQuery(name = "Account.findByAccountIdAndEmailAndAccountType", query = "select a from Account a where a.id =:accountId AND a.customer.email =:email AND a.accountType =:accountType"),
         @NamedQuery(name = "Account.findByUserEmail", query = "select a from Account a where a.customer.email =:email"),
         @NamedQuery(name = "Account.findAll", query = "select a from Account a")
 })

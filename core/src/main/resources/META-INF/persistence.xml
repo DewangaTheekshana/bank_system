@@ -6,8 +6,8 @@
         <class>lk.jiat.app.core.model.User</class>
         <class>lk.jiat.app.core.model.Account</class>
         <class>lk.jiat.app.core.model.Audit</class>
-        <class>lk.jiat.app.core.model.Interest_Accrual</class>
-        <class>lk.jiat.app.core.model.Scheduled_Transaction</class>
+        <class>lk.jiat.app.core.model.InterestAccrual</class>
+        <class>lk.jiat.app.core.model.Scheduled_Transfer</class>
         <class>lk.jiat.app.core.model.Transaction</class>
         <shared-cache-mode>NONE</shared-cache-mode>
         <properties>
