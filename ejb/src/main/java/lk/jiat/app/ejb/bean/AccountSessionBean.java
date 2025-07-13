@@ -1,6 +1,8 @@
 package lk.jiat.app.ejb.bean;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -25,14 +27,13 @@ public class AccountSessionBean implements AccountService {
     }
 
     @Override
-    public Optional<Account> getAccountByAccountNumber(String accountNumber) {
+    public Account getAccountByAccountNumber(String accountNumber) {
 
         try {
-            TypedQuery<Account> query = em.createNamedQuery("Account.findByAccountNumber", Account.class).setParameter("accountNumber", accountNumber);
+            return em.createNamedQuery("Account.findByAccountNumber", Account.class).setParameter("accountNumber", accountNumber).getSingleResult();
 
-            return Optional.ofNullable(query.getSingleResult());
         }catch (NoResultException e){
-            return Optional.empty();
+            return null;
         }
 
     }
@@ -65,6 +66,48 @@ public class AccountSessionBean implements AccountService {
     @Override
     public List<Account> getAllAccounts() {
         return em.createNamedQuery("Account.findAll", Account.class).getResultList();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    public void creditToAccount(String accountNo, double amount) {
+
+        try {
+
+            Account account = em.createNamedQuery("Account.findByAccountNumber", Account.class).setParameter("accountNumber", accountNo).getSingleResult();
+
+            if (amount > 0) {
+                account.setBalance(account.getBalance() + amount);
+                System.out.println("credit to account: " + accountNo);
+            }
+
+            em.merge(account);
+
+        }catch (NoResultException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    public void debitFromAccount(String accountNo, double amount) {
+
+        try {
+
+            Account account = em.createNamedQuery("Account.findByAccountNumber", Account.class).setParameter("accountNumber", accountNo).getSingleResult();
+
+            if (account.getBalance() >= amount) {
+                account.setBalance(account.getBalance() - amount);
+                System.out.println("debit to account: " + accountNo);
+
+                em.merge(account);
+            }
+
+        }catch (NoResultException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -1,6 +1,8 @@
 package lk.jiat.app.ejb.bean;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -8,6 +10,8 @@ import lk.jiat.app.core.model.Account;
 import lk.jiat.app.core.model.Transaction;
 import lk.jiat.app.core.service.TransactionService;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
@@ -32,6 +36,14 @@ public class TransactionSessionBean implements TransactionService {
     @Override
     public List<Transaction> getTransactionsByAccountId(Long accountId, String email) {
         return em.createNamedQuery("Transaction.findByAccountId", Transaction.class).setParameter("accountId", accountId).setParameter("email", email).getResultList();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void saveTransaction(Account sourceAccountNo, Account destinationAccountNo, String description, double amount) {
+
+        em.persist(new Transaction(sourceAccountNo, "TRANSFER", amount, description, LocalDateTime.now(), destinationAccountNo));
+
     }
 
 }

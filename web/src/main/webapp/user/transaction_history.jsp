@@ -71,7 +71,7 @@
                         ${transaction.relatedAccount.customer.lastName}
                 </p>
                 <c:choose>
-                    <c:when test="${transaction.account.id == selectedAccountId}">
+                    <c:when test="${transaction.account.id != selectedAccountId}">
                         <p style="color: green">Credited</p>
                     </c:when>
                     <c:otherwise>

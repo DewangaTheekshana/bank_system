@@ -28,7 +28,7 @@ public class Account implements Serializable{
 
     private String accountNumber;
     private String accountType;
-    private BigDecimal balance;
+    private double balance;
     private BigDecimal interestRate;
 
     @Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class Account implements Serializable{
 
     public Account() {}
 
-    public Account(Customer customer, String accountNumber, String accountType, BigDecimal balance, BigDecimal interestRate, Status status, LocalDateTime createdAt) {
+    public Account(Customer customer, String accountNumber, String accountType, double balance, BigDecimal interestRate, Status status, LocalDateTime createdAt) {
         this.customer = customer;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
@@ -83,11 +83,11 @@ public class Account implements Serializable{
         this.accountType = accountType;
     }
 
-    public BigDecimal getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

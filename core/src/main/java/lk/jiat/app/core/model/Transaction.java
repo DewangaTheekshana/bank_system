@@ -23,7 +23,7 @@ public class Transaction implements Serializable {
     private Account account;
 
     private String transactionType;
-    private BigDecimal amount;
+    private double amount;
     private String description;
     private LocalDateTime createdAt;
 
@@ -33,7 +33,7 @@ public class Transaction implements Serializable {
 
     public Transaction() {}
 
-    public Transaction(Account account, String transactionType, BigDecimal amount, String description, LocalDateTime createdAt, Account relatedAccount) {
+    public Transaction(Account account, String transactionType, double amount, String description, LocalDateTime createdAt, Account relatedAccount) {
         this.account = account;
         this.transactionType = transactionType;
         this.amount = amount;
@@ -69,11 +69,11 @@ public class Transaction implements Serializable {
         this.transactionType = transactionType;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
