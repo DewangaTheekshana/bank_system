@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "scheduled_transfers")
+@NamedQueries({
+        @NamedQuery(name = "Scheduled.findByStatusAndTime", query = "SELECT s FROM Scheduled_Transfer s WHERE s.status = :scheduleStatus AND s.nextExecutionDate <= :now")
+})
 public class Scheduled_Transfer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,18 +25,18 @@ public class Scheduled_Transfer implements Serializable {
     @JoinColumn(name = "target_account_id")
     private Account targetAccount;
 
-    private BigDecimal amount;
+    private double amount;
     private String frequency;
-    private LocalDate nextExecutionDate;
+    private LocalDateTime nextExecutionDate;
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.INACTIVE;
+    private ScheduledStatusType status = ScheduledStatusType.ACTIVE;
 
     private LocalDateTime createdAt;
 
     public Scheduled_Transfer() {}
 
-    public Scheduled_Transfer(Account sourceAccount, Account targetAccount, BigDecimal amount, String frequency, LocalDate nextExecutionDate, Status status, LocalDateTime createdAt) {
+    public Scheduled_Transfer(Account sourceAccount, Account targetAccount, double amount, String frequency, LocalDateTime nextExecutionDate, ScheduledStatusType status, LocalDateTime createdAt) {
         this.sourceAccount = sourceAccount;
         this.targetAccount = targetAccount;
         this.amount = amount;
@@ -70,11 +73,11 @@ public class Scheduled_Transfer implements Serializable {
         this.targetAccount = targetAccount;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -86,19 +89,19 @@ public class Scheduled_Transfer implements Serializable {
         this.frequency = frequency;
     }
 
-    public LocalDate getNextExecutionDate() {
+    public LocalDateTime getNextExecutionDate() {
         return nextExecutionDate;
     }
 
-    public void setNextExecutionDate(LocalDate nextExecutionDate) {
+    public void setNextExecutionDate(LocalDateTime nextExecutionDate) {
         this.nextExecutionDate = nextExecutionDate;
     }
 
-    public Status getStatus() {
+    public ScheduledStatusType getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ScheduledStatusType status) {
         this.status = status;
     }
 

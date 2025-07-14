@@ -1,11 +1,13 @@
 package lk.jiat.app.core.service;
 
+import jakarta.ejb.Remote;
 import lk.jiat.app.core.model.Account;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+@Remote
 public interface AccountService {
     Optional<Account> getAccountById(Long id);
     Account getAccountByAccountNumber(String accountNumber);
