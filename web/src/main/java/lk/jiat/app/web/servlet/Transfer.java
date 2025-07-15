@@ -70,6 +70,11 @@ public class Transfer extends HttpServlet {
             response.setContentType("text/plain");
             response.getWriter().println("Destination Account Account not found.");
 
+        }else if (loginUserAccount.get(0).getStatus().name().equals("INACTIVE")) {
+
+            response.setContentType("text/plain");
+            response.getWriter().println("Inactive account found.");
+
         }else if (desAcc.getAccountType().equals("FIXED")){
 
             response.setContentType("text/plain");

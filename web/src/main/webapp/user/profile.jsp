@@ -41,14 +41,6 @@
     <c:choose>
         <c:when test="${not empty user}">
 
-            <c:if test="${not empty error}">
-                <p style="color:red">${error}</p>
-            </c:if>
-
-            <c:if test="${not empty message}">
-                <p style="color:green">${message}</p>
-            </c:if>
-
 
             <p>First Name: ${user.customer.firstName}</p>
             <p>Last Name: ${user.customer.lastName}</p>

@@ -9,6 +9,7 @@ import lk.jiat.app.core.model.Scheduled_Transfer;
 import lk.jiat.app.core.service.ScheduleService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Stateless
 public class ScheduleSessionBean implements ScheduleService {
@@ -21,5 +22,10 @@ public class ScheduleSessionBean implements ScheduleService {
 
         em.persist(new Scheduled_Transfer(sourceAccount, destinationAccount, amount, "ONETIME", scheduledDateTime, ScheduledStatusType.ACTIVE, LocalDateTime.now()));
 
+    }
+
+    @Override
+    public List<Scheduled_Transfer> getActiveSchedules(ScheduledStatusType statusType) {
+        return em.createNamedQuery("Scheduled.findByActiveSchedule", Scheduled_Transfer.class).setParameter("status", statusType).getResultList();
     }
 }

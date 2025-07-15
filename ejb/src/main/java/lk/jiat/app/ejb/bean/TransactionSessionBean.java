@@ -11,6 +11,7 @@ import lk.jiat.app.core.model.Transaction;
 import lk.jiat.app.core.service.TransactionService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +37,15 @@ public class TransactionSessionBean implements TransactionService {
     @Override
     public List<Transaction> getTransactionsByAccountId(Long accountId, String email) {
         return em.createNamedQuery("Transaction.findByAccountId", Transaction.class).setParameter("accountId", accountId).setParameter("email", email).getResultList();
+    }
+
+    @Override
+    public List<Transaction> getDailyTransactionVolume(LocalDate date) {
+
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+
+        return em.createNamedQuery("Transaction.findByDailyTransactionVolume", Transaction.class).setParameter("start", startOfDay).setParameter("end", endOfDay).getResultList();
     }
 
     @Override

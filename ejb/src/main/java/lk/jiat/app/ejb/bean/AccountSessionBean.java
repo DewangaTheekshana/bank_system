@@ -10,6 +10,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lk.jiat.app.core.model.Account;
 import lk.jiat.app.core.model.AccountType;
+import lk.jiat.app.core.model.Customer;
+import lk.jiat.app.core.model.Status;
 import lk.jiat.app.core.service.AccountService;
 
 import java.util.List;
@@ -112,7 +114,24 @@ public class AccountSessionBean implements AccountService {
     }
 
     @Override
-    public void addAccount(Account account) {
+    public List<Account> getAllActiveAccounts(Status status) {
+        return em.createNamedQuery("Account.findByAllActive", Account.class).setParameter("status", status).getResultList();
+    }
+
+    @Override
+    public String UpdateAccountStatus(String accountNo, Status status) {
+        Account account = em.createNamedQuery("Account.findByAccountNumber", Account.class).setParameter("accountNumber", accountNo).getSingleResult();
+        account.setStatus(status);
+
+        em.merge(account);
+
+        return "Account updated";
+    }
+
+    @Override
+    public void saveAccount(Account account) {
+
+        em.persist(account);
 
     }
 

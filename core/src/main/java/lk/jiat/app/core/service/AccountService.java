@@ -3,6 +3,7 @@ package lk.jiat.app.core.service;
 import jakarta.ejb.Remote;
 import lk.jiat.app.core.model.Account;
 import lk.jiat.app.core.model.AccountType;
+import lk.jiat.app.core.model.Status;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,7 +19,9 @@ public interface AccountService {
     List<Account> getAllAccounts();
     void creditToAccount(String accountNo, double amount);
     void debitFromAccount(String accountNo, double amount);
-    void addAccount(Account account);
+    List<Account> getAllActiveAccounts(Status status);
+    String UpdateAccountStatus(String accountNo, Status status);
+    void saveAccount(Account account);
     void updateAccount(Account account);
     void deleteAccount(int id);
 }

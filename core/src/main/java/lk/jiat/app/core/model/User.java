@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "User.findByEmail", query = "select u from User u join u.customer c where c.email =:email")
+        @NamedQuery(name = "User.findByEmail", query = "select u from User u join u.customer c where c.email =:email"),
+        @NamedQuery(name = "User.findAllUsers", query = "select u from User u")
 })
 public class User implements Serializable {
     @Id

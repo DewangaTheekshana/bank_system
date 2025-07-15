@@ -15,14 +15,15 @@ import java.time.LocalDateTime;
         @NamedQuery(name = "Account.findByAccountType", query = "select a from Account a where a.accountType =:accountType"),
         @NamedQuery(name = "Account.findByAccountIdAndEmailAndAccountType", query = "select a from Account a where a.id =:accountId AND a.customer.email =:email AND a.accountType =:accountType"),
         @NamedQuery(name = "Account.findByUserEmail", query = "select a from Account a where a.customer.email =:email"),
-        @NamedQuery(name = "Account.findAll", query = "select a from Account a")
+        @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
+        @NamedQuery(name = "Account.findByAllActive", query = "select a from Account a where a.status =:status")
 })
 public class Account implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -32,7 +33,7 @@ public class Account implements Serializable{
     private BigDecimal interestRate;
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.INACTIVE;
+    private Status status = Status.ACTIVE;
 
     private LocalDateTime createdAt;
 

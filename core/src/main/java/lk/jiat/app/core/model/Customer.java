@@ -10,6 +10,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "customers")
+@NamedQueries({
+        @NamedQuery(name = "Customer.findByEmail", query = "select c from Customer c where c.email =:email"),
+        @NamedQuery(name = "Customer.findAll", query = "select c from Customer c"),
+        @NamedQuery(name = "Customer.findByEmail", query = "select c from Customer c where c.email =:email"),
+        @NamedQuery(name = "Customer.findByPhone", query = "select c from Customer c where c.phoneNumber =:mobile")
+})
 public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +29,12 @@ public class Customer implements Serializable {
     private LocalDate dateOfBirth;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
 
     public Customer() {}
 
-    public Customer(String firstName, String lastName, String email, String phoneNumber, String address, LocalDate dateOfBirth, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Customer(String firstName, String lastName, String email, String phoneNumber, String address, LocalDate dateOfBirth, LocalDateTime createdAt, LocalDateTime updatedAt, Status status) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -35,6 +43,7 @@ public class Customer implements Serializable {
         this.dateOfBirth = dateOfBirth;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.status = status;
     }
 
     // getters and setters
@@ -110,6 +119,14 @@ public class Customer implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
 

@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "scheduled_transfers")
 @NamedQueries({
-        @NamedQuery(name = "Scheduled.findByStatusAndTime", query = "SELECT s FROM Scheduled_Transfer s WHERE s.status = :scheduleStatus AND s.nextExecutionDate <= :now")
+        @NamedQuery(name = "Scheduled.findByStatusAndTime", query = "SELECT s FROM Scheduled_Transfer s WHERE s.status = :scheduleStatus AND s.nextExecutionDate <= :now"),
+        @NamedQuery(name = "Scheduled.findByActiveSchedule", query = "select s from Scheduled_Transfer s where s.status =:status")
 })
 public class Scheduled_Transfer implements Serializable {
     @Id

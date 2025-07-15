@@ -9,6 +9,8 @@ import lk.jiat.app.core.model.Customer;
 import lk.jiat.app.core.model.User;
 import lk.jiat.app.core.service.UserService;
 
+import java.util.List;
+
 @Stateless
 public class UserSessionBean implements UserService {
     @PersistenceContext
@@ -21,9 +23,16 @@ public class UserSessionBean implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        User user = em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email).getSingleResult();
-        System.out.println(user);
-        return user;
+        try{
+            return em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email).getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return em.createNamedQuery("User.findAllUsers", User.class).getResultList();
     }
 
     @RolesAllowed("ADMIN")

@@ -6,10 +6,7 @@ import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import lk.jiat.app.core.model.Account;
-import lk.jiat.app.core.model.AccountType;
-import lk.jiat.app.core.model.InterestAccrual;
-import lk.jiat.app.core.model.Transaction;
+import lk.jiat.app.core.model.*;
 import lk.jiat.app.core.service.AccountService;
 
 import java.time.LocalDate;
@@ -26,8 +23,8 @@ public class InterestAccrualBean {
     @EJB
     private AccountService accountService;
 
-    @Schedule(dayOfMonth = "1",hour = "2", minute = "00", persistent = false)
-    public void processInterest(){
+    @Schedule(dayOfMonth = "15", hour = "18", minute = "34", persistent = false)
+    public void processInterest() {
 
         System.out.println("Processing interest accrued");
 
@@ -40,44 +37,44 @@ public class InterestAccrualBean {
 
         for (Account acc : savingAcc) {
 
-            if (acc.getAccountType().equals(AccountType.SAVING.name())) {
-                double interest = Math.round(acc.getBalance() * (monthlyRate / 100) * 100.0) / 100.0;
+            if (acc.getStatus().equals(Status.ACTIVE)) {
 
-                if (interest > 0.0) {
-                    acc.setBalance(acc.getBalance() + interest);
+                if (acc.getAccountType().equals(AccountType.SAVING.name())) {
+                    double interest = Math.round(acc.getBalance() * (monthlyRate / 100) * 100.0) / 100.0;
 
-                    InterestAccrual ia = new InterestAccrual(
-                            acc,
-                            interest,
-                            LocalDate.now()
-                    );
+                    if (interest > 0.0) {
+                        acc.setBalance(acc.getBalance() + interest);
 
-                    em.persist(ia);
+                        InterestAccrual ia = new InterestAccrual(
+                                acc,
+                                interest,
+                                LocalDate.now()
+                        );
 
-                }
+                        em.persist(ia);
 
-            }else {
+                    }
 
-                double interest2 = Math.round(acc.getBalance() * (fixMonthlyRate / 100) * 100.0) / 100.0;
+                } else {
 
-                if (interest2 > 0.0) {
-                    acc.setBalance(acc.getBalance() + interest2);
+                    double interest2 = Math.round(acc.getBalance() * (fixMonthlyRate / 100) * 100.0) / 100.0;
 
-                    InterestAccrual ia = new InterestAccrual(
-                            acc,
-                            interest2,
-                            LocalDate.now()
-                    );
+                    if (interest2 > 0.0) {
+                        acc.setBalance(acc.getBalance() + interest2);
 
-                    em.persist(ia);
+                        InterestAccrual ia = new InterestAccrual(
+                                acc,
+                                interest2,
+                                LocalDate.now()
+                        );
+
+                        em.persist(ia);
+
+                    }
 
                 }
 
             }
-
-//
-//
-
 
         }
 

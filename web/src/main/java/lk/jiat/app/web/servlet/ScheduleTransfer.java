@@ -65,6 +65,11 @@ public class ScheduleTransfer extends HttpServlet {
                 return;
             }
 
+            if (sourceAccount.getStatus().name().equals("INACTIVE")) {
+                response.getWriter().println("Inactive account number.");
+                return;
+            }
+
             scheduleService.saveSchedule(sourceAccount, destinationAccount, amount, scheduledDateTime, loggedInUserEmail);
 
             response.sendRedirect(request.getContextPath() + "/user/index.jsp");
