@@ -9,6 +9,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lk.jiat.app.core.model.Account;
+import lk.jiat.app.core.model.AccountType;
 import lk.jiat.app.core.service.AccountService;
 
 import java.util.List;
@@ -57,9 +58,9 @@ public class AccountSessionBean implements AccountService {
     }
 
     @Override
-    public List<Account> getAccountsByAccountType(String accountType) {
+    public List<Account> getAccountsByAccountType(AccountType accountType) {
         TypedQuery<Account> query = em.createNamedQuery("Account.findByAccountType", Account.class)
-                .setParameter("accountType", accountType);
+                .setParameter("accountType", accountType.name());
         return query.getResultList();
     }
 

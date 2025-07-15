@@ -34,7 +34,7 @@ public class UserSessionBean implements UserService {
 
     @Override
     public void updateUser(User user) {
-
+        em.merge(user);
     }
 
     @Override

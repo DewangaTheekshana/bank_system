@@ -34,6 +34,8 @@
     </c:if>
 </c:if>
 
+<a href="${pageContext.request.contextPath}/user/profile.jsp">Profile</a>
+
 
 <%
     try {
@@ -138,6 +140,28 @@
         border-color: #0d6efd;
     ">
                             View Fixed Deposit Details
+                        </button>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/user/interest_history.jsp" method="post"
+                          style="display:inline;">
+                        <input type="hidden" name="account_id" value="${account.id}">
+                        <button type="submit" style="
+        cursor: pointer;
+        outline: 0;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 1rem;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        color: #0d6efd;
+        border-color: #0d6efd;
+    ">
+                            Interest Accrual History
                         </button>
                     </form>
                 </c:otherwise>

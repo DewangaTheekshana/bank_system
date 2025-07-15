@@ -9,6 +9,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "interest_accrual")
+@NamedQueries({
+        @NamedQuery(name = "Interest.findByAccountId", query = "select a from InterestAccrual a where a.account.id =:accountid and a.account.customer.email =:email")
+})
 public class InterestAccrual implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +21,12 @@ public class InterestAccrual implements Serializable{
     @JoinColumn(name = "account_id")
     private Account account;
 
-    private BigDecimal amount;
+    private double amount;
     private LocalDate accrualDate;
 
     public InterestAccrual() {}
 
-    public InterestAccrual(Account account, BigDecimal amount, LocalDate accrualDate) {
+    public InterestAccrual(Account account, double amount, LocalDate accrualDate) {
         this.account = account;
         this.amount = amount;
         this.accrualDate = accrualDate;
@@ -48,11 +51,11 @@ public class InterestAccrual implements Serializable{
         this.account = account;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

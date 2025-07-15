@@ -3,11 +3,7 @@
 <%@ page import="lk.jiat.app.core.model.Transaction" %>
 <%@ page import="java.util.List" %>
 <%@ page import="lk.jiat.app.core.service.TransactionService" %>
-<%@ page import="javax.naming.NamingException" %>
-<%@ page import="lk.jiat.app.core.service.UserService" %>
-<%@ page import="lk.jiat.app.core.model.User" %>
-<%@ page import="lk.jiat.app.core.service.AccountService" %>
-<%@ page import="lk.jiat.app.core.model.Account" %><%--
+<%@ page import="javax.naming.NamingException" %><%--
   Created by IntelliJ IDEA.
   User: HUNT GADGETS
   Date: 7/9/2025
@@ -38,6 +34,7 @@
         }
     %>
 
+
     <%
         try {
             String email = request.getUserPrincipal().getName();
@@ -57,6 +54,30 @@
             throw new RuntimeException(e);
         }
     %>
+
+    <form action="${pageContext.request.contextPath}/user/interest_history.jsp" method="post"
+          style="display:inline;">
+        <input type="hidden" name="account_id" value="${selectedAccountId}">
+        <button type="submit" style="
+        cursor: pointer;
+        outline: 0;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 1rem;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        color: #0d6efd;
+        border-color: #0d6efd;
+    ">
+            Interest Accrual History
+        </button>
+    </form>
+
 
     <c:choose>
         <c:when test="${not empty transactionList}">
