@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.app.core.model.*;
 import lk.jiat.app.core.service.AccountService;
 import lk.jiat.app.core.service.CustomerService;
+import lk.jiat.app.core.service.RegisterService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet("/registerCustomer")
 public class RegisterCustomer extends HttpServlet {
@@ -23,6 +25,9 @@ public class RegisterCustomer extends HttpServlet {
 
     @EJB
     private AccountService accountService;
+
+    @EJB
+    private RegisterService registerService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,30 +46,34 @@ public class RegisterCustomer extends HttpServlet {
         boolean createFixed = createFixedStr != null;
         double fixedDeposit = parseDoubleOrZero(fixedInitialDepositStr);
 
-        if (firstName == null || lastName == null || email == null || phone == null || dob == null || address == null) {
-
+        if (firstName == null || lastName == null || email == null || phone == null || dob == null || address == null || savingDeposit == 0) {
             response.getWriter().println("plz fill all fields");
             return;
-
         }
 
-        Customer email1 = customerService.findByEmail(email);
-        if (email1 != null) {
+        if (customerService.findByEmail(email) != null) {
             response.getWriter().println("email already exists");
             return;
         }
 
-        Customer phone1 = customerService.findByPhone(phone);
-        if (phone1 != null) {
+        if (customerService.findByPhone(phone) != null) {
             response.getWriter().println("phone already exists");
             return;
         }
 
-        if (savingDeposit <  0) {
+        if (savingDeposit <= 0) {
             response.getWriter().println("savingDeposit must be greater than 0");
             return;
         }
 
+        LocalDate ValidDob = LocalDate.parse(dob, DateTimeFormatter.ISO_LOCAL_DATE);
+
+        if (ValidDob.isAfter(LocalDate.now())) {
+            response.getWriter().println("Date of birth cannot be in the future.");
+            return;
+        }
+
+        // Create Customer
         Customer customer = new Customer(
                 firstName,
                 lastName,
@@ -77,29 +86,12 @@ public class RegisterCustomer extends HttpServlet {
                 Status.INACTIVE
         );
 
-        // persist customer first
-//        customerService.registerCustomer(customer);
 
-        Account savingAccount = new Account();
-        savingAccount.setCustomer(customer);
-        savingAccount.setAccountNumber(generateAccountNumber());
-        savingAccount.setAccountType("SAVING");
-        savingAccount.setBalance(savingDeposit);
-        savingAccount.setInterestRate(BigDecimal.valueOf(2.0));
-        savingAccount.setStatus(Status.INACTIVE);
-        savingAccount.setCreatedAt(LocalDateTime.now());
-        accountService.saveAccount(savingAccount);
+        registerService.registerCustomer(customer);
+        registerService.registerAccount(email, generateAccountNumber(), "SAVING", savingDeposit, BigDecimal.valueOf(2.0), Status.ACTIVE, LocalDateTime.now());
 
         if (createFixed) {
-            Account fixedAccount = new Account();
-            fixedAccount.setCustomer(customer);
-            fixedAccount.setAccountNumber(generateAccountNumber());
-            fixedAccount.setAccountType("FIXED");
-            fixedAccount.setBalance(fixedDeposit);
-            fixedAccount.setInterestRate(BigDecimal.valueOf(5.0));
-            fixedAccount.setStatus(Status.INACTIVE);
-            fixedAccount.setCreatedAt(LocalDateTime.now());
-            accountService.saveAccount(fixedAccount);
+            registerService.registerAccount(email, generateAccountNumber(),"FIXED", fixedDeposit, BigDecimal.valueOf(5.0), Status.ACTIVE, LocalDateTime.now());
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/register_customer.jsp");
