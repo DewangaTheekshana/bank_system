@@ -55,4 +55,9 @@ public class CustomerSessionBean implements CustomerService {
     public void registerCustomer(Customer customer) {
         em.persist(customer);
     }
+
+    @Override
+    public void updateCustomer(Customer customer) {
+        em.merge(customer);
+    }
 }

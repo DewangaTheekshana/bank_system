@@ -97,6 +97,9 @@
                     </c:when>
                     <c:otherwise>
                         <p style="color: red">Debited</p>
+                        <p>
+                            <a href="<%= request.getContextPath() %>/transferReceipt?id=${transaction.id}">Download Receipt</a>
+                        </p>
                     </c:otherwise>
                 </c:choose>
                 <hr>

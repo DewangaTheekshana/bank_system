@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.app.core.exception.LoginFailedException;
+import lk.jiat.app.core.model.Status;
 import lk.jiat.app.core.model.User;
 import lk.jiat.app.core.model.UserType;
 import lk.jiat.app.core.service.UserService;
@@ -41,22 +42,31 @@ public class Login extends HttpServlet {
 
         System.out.println("status: " + status);
 
-        if (status == AuthenticationStatus.SUCCESS) {
+        User user = userService.getUserByEmail(email);
 
-            User user = userService.getUserByEmail(email);
+        if (user.getCustomer().getStatus().equals(Status.ACTIVE)) {
 
-            if (user.getUserType() == UserType.ADMIN){
-                request.getSession().setAttribute("admin", user);
-                response.sendRedirect(request.getContextPath() + "/admin/index.jsp");
-            }else if (user.getUserType() == UserType.USER) {
-                request.getSession().setAttribute("user", user);
-                response.sendRedirect(request.getContextPath() + "/user/index.jsp");
+            if (status == AuthenticationStatus.SUCCESS) {
+
+                if (user.getUserType() == UserType.ADMIN) {
+                    request.getSession().setAttribute("admin", user);
+                    response.sendRedirect(request.getContextPath() + "/admin/index.jsp");
+                } else if (user.getUserType() == UserType.USER) {
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect(request.getContextPath() + "/user/index.jsp");
+
+                } else {
+                    throw new LoginFailedException("Inactive User");
+                }
+
+
             } else {
-                throw new LoginFailedException("Invalid User Role");
+                throw new LoginFailedException("Invalid email or password");
             }
 
-        }else {
-            throw new LoginFailedException("Invalid email or password");
+        } else {
+            request.getSession().invalidate();
+            throw new LoginFailedException("Invalid User Role");
         }
 
     }

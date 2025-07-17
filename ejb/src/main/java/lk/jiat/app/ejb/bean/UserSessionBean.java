@@ -7,8 +7,10 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lk.jiat.app.core.model.Customer;
 import lk.jiat.app.core.model.User;
+import lk.jiat.app.core.model.UserType;
 import lk.jiat.app.core.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
@@ -37,7 +39,20 @@ public class UserSessionBean implements UserService {
 
     @RolesAllowed("ADMIN")
     @Override
-    public void addUser(User user) {
+    public void addUser(String email, String password, UserType userType) {
+
+        Customer customer = em.createNamedQuery("Cutomer.findByEmail", Customer.class).setParameter("email", email).getSingleResult();
+
+        User user = new User(
+                customer,
+                customer.getFirstName()+"_"+customer.getLastName(),
+                password,
+                userType,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+
+        em.persist(user);
 
     }
 

@@ -70,6 +70,14 @@ public class ScheduleTransfer extends HttpServlet {
                 return;
             }
 
+            if (sourceAccount.getBalance() < amount) {
+
+                response.setContentType("text/plain");
+                response.getWriter().println("Your available balance is insufficient.");
+                return;
+
+            }
+
             scheduleService.saveSchedule(sourceAccount, destinationAccount, amount, scheduledDateTime, loggedInUserEmail);
 
             response.sendRedirect(request.getContextPath() + "/user/index.jsp");

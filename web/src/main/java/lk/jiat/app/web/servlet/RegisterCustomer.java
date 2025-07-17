@@ -6,16 +6,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.jiat.app.core.mail.VerificationMail;
 import lk.jiat.app.core.model.*;
+import lk.jiat.app.core.provider.MailServiceProvider;
 import lk.jiat.app.core.service.AccountService;
 import lk.jiat.app.core.service.CustomerService;
 import lk.jiat.app.core.service.RegisterService;
+import lk.jiat.app.core.service.UserService;
+import lk.jiat.app.core.util.Encryption;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 @WebServlet("/registerCustomer")
 public class RegisterCustomer extends HttpServlet {
@@ -28,6 +33,9 @@ public class RegisterCustomer extends HttpServlet {
 
     @EJB
     private RegisterService registerService;
+
+    @EJB
+    private UserService userService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -73,7 +81,6 @@ public class RegisterCustomer extends HttpServlet {
             return;
         }
 
-        // Create Customer
         Customer customer = new Customer(
                 firstName,
                 lastName,
@@ -91,10 +98,21 @@ public class RegisterCustomer extends HttpServlet {
         registerService.registerAccount(email, generateAccountNumber(), "SAVING", savingDeposit, BigDecimal.valueOf(2.0), Status.ACTIVE, LocalDateTime.now());
 
         if (createFixed) {
-            registerService.registerAccount(email, generateAccountNumber(),"FIXED", fixedDeposit, BigDecimal.valueOf(5.0), Status.ACTIVE, LocalDateTime.now());
+            registerService.registerAccount(email, generateAccountNumber(), "FIXED", fixedDeposit, BigDecimal.valueOf(5.0), Status.ACTIVE, LocalDateTime.now());
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/register_customer.jsp");
+
+        String pass = generatePassword();
+        String encryptPass = Encryption.encrypt(pass);
+
+        userService.addUser(email, encryptPass, UserType.USER);
+
+        System.out.println("password"+" "+ pass +" "+ encryptPass);
+
+        VerificationMail mail = new VerificationMail(email, pass);
+        MailServiceProvider.getInstance().sendMail(mail);
+
+        response.sendRedirect(request.getContextPath() + "/admin");
     }
 
     private String generateAccountNumber() {
@@ -102,6 +120,12 @@ public class RegisterCustomer extends HttpServlet {
         int max = 999_999_999;
         int randomNum = min + (int) (Math.random() * ((max - min) + 1));
         return String.valueOf(randomNum);
+    }
+
+    private String generatePassword() {
+        Random random = new Random();
+        int password = 100_000 + random.nextInt(900_000); // ensures 6 digits
+        return String.valueOf(password);
     }
 
     private double parseDoubleOrZero(String str) {

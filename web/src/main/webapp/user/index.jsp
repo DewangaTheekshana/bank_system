@@ -74,6 +74,28 @@
 
             <c:choose>
                 <c:when test="${account.accountType eq 'SAVING'}">
+
+                    <a style="
+                    cursor: pointer;
+                    outline: 0;
+                    display: inline-block;
+                    font-weight: 400;
+                    line-height: 1.5;
+                    text-align: center;
+                    background-color: transparent;
+                    border: 1px solid transparent;
+                    padding: 6px 12px;
+                    font-size: 1rem;
+                    border-radius: .25rem;
+                    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+                    color: #0d6efd;
+                    border-color: #0d6efd;
+                    :hover {
+                        color: #fff;
+                        background-color: #0d6efd;
+                        border-color: #0d6efd;
+                    }
+                " href="${pageContext.request.contextPath}/user/money_transfer.jsp">Money Transfer</a>
                     <form action="${pageContext.request.contextPath}/user/transaction_history.jsp" method="post"
                           style="display:inline;">
                         <input type="hidden" name="accountId" value="${account.id}">
@@ -97,27 +119,28 @@
                         </button>
                     </form>
 
-                    <a style="
-                    cursor: pointer;
-                    outline: 0;
-                    display: inline-block;
-                    font-weight: 400;
-                    line-height: 1.5;
-                    text-align: center;
-                    background-color: transparent;
-                    border: 1px solid transparent;
-                    padding: 6px 12px;
-                    font-size: 1rem;
-                    border-radius: .25rem;
-                    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-                    color: #0d6efd;
-                    border-color: #0d6efd;
-                    :hover {
-                        color: #fff;
-                        background-color: #0d6efd;
-                        border-color: #0d6efd;
-                    }
-                " href="${pageContext.request.contextPath}/user/money_transfer.jsp">Money Transfer</a>
+                    <form action="${pageContext.request.contextPath}/user/scheduled_transaction.jsp" method="post"
+                          style="display:inline;">
+                        <input type="hidden" name="accountId" value="${account.id}">
+                        <button type="submit" style="
+        cursor: pointer;
+        outline: 0;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 1rem;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        color: #0d6efd;
+        border-color: #0d6efd;
+    ">
+                            View Scheduled Transactions
+                        </button>
+                    </form>
                 </c:when>
                 <c:otherwise>
                     <form action="${pageContext.request.contextPath}/user/fixed_deposit.jsp" method="post"

@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.app.core.model.Account;
+import lk.jiat.app.core.model.Transaction;
 import lk.jiat.app.core.service.AccountService;
+import lk.jiat.app.core.service.TransactionService;
 import lk.jiat.app.core.service.TransferService;
 
 import java.io.IOException;
@@ -21,6 +23,9 @@ public class Transfer extends HttpServlet {
 
     @EJB
     private AccountService accountService;
+
+    @EJB
+    private TransactionService transactionService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,29 +69,46 @@ public class Transfer extends HttpServlet {
 
             response.setContentType("text/plain");
             response.getWriter().println("Account number does not match.");
+            return;
 
-        }else if (desAcc == null) {
+        }
+
+        if (desAcc == null) {
 
             response.setContentType("text/plain");
             response.getWriter().println("Destination Account Account not found.");
+            return;
 
-        }else if (loginUserAccount.get(0).getStatus().name().equals("INACTIVE")) {
+        }
+
+        if (loginUserAccount.get(0).getStatus().name().equals("INACTIVE")) {
 
             response.setContentType("text/plain");
             response.getWriter().println("Inactive account found.");
+            return;
 
-        }else if (desAcc.getAccountType().equals("FIXED")){
+        }
+
+        if (desAcc.getAccountType().equals("FIXED")) {
 
             response.setContentType("text/plain");
             response.getWriter().println("Destination Account Account type is fixed deposit account.");
-
-        }else {
-
-            transferService.transferAmount(sourceAccountNo, destinationAccountNo, description, amount);
-
-            response.sendRedirect(request.getContextPath() + "/user/index.jsp");
+            return;
 
         }
+
+        if (loginUserAccount.get(0).getBalance() < amount) {
+
+            response.setContentType("text/plain");
+            response.getWriter().println("Your available balance is insufficient.");
+            return;
+
+        }
+
+        transferService.transferAmount(sourceAccountNo, destinationAccountNo, description, amount);
+
+
+        response.sendRedirect(request.getContextPath()+ "/user/transaction_success.jsp");
 
     }
 }

@@ -12,7 +12,8 @@ import java.util.List;
 @Remote
 public interface TransactionService {
     Transaction getTransaction(int id);
-    List<Transaction> getTransactionByCustomer(Long id);
+    Transaction getTransactionByTransactionId(int id);
+    Transaction getTransactionByCustomer(Long id);
     List<Transaction> getTransactionsByAccountId(Long accountId, String email);
     List<Transaction> getDailyTransactionVolume(LocalDate date);
     void saveTransaction(Account sourceAccountNo, Account destinationAccountNo, String description, double amount);

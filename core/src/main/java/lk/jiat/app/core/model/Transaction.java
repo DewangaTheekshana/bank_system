@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Table(name = "transactions")
 @Cacheable(false)
 @NamedQueries({
-        @NamedQuery(name = "Transaction.findByCustomerId", query = "select t from Transaction t where t.account.customer.id =:customerId OR t.relatedAccount.customer.id =:customerId"),
+        @NamedQuery(name = "Transaction.findByCustomerId", query = "select t from Transaction t where t.account.customer.id =:customerId order by t.id desc"),
+        @NamedQuery(name = "Transaction.findById", query = "select t from Transaction t where t.id =:id"),
         @NamedQuery(name = "Transaction.findByAccountId", query = "SELECT t FROM Transaction t WHERE (t.account.id = :accountId AND t.account.customer.email = :email) OR (t.relatedAccount.id = :accountId AND t.relatedAccount.customer.email = :email) ORDER BY t.id"),
         @NamedQuery(name = "Transaction.findByDailyTransactionVolume", query = "select t from Transaction t where t.createdAt between :start and :end")
 })

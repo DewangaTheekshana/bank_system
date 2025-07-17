@@ -13,4 +13,5 @@ public interface CustomerService {
     Customer findByPhone(String phone);
     String UpdateCustomerStatus(String email, Status status);
     void registerCustomer(Customer customer);
+    void updateCustomer(Customer customer);
 }

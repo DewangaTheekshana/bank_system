@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lk.jiat.app.core.model.Account;
@@ -28,9 +29,19 @@ public class TransactionSessionBean implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionByCustomer(Long id) {
+    public Transaction getTransactionByTransactionId(int id) {
+        return em.createNamedQuery("Transaction.findById", Transaction.class).setParameter("id", id).getSingleResult();
+    }
+
+    @Override
+    public Transaction getTransactionByCustomer(Long id) {
+        try {
         return em.createNamedQuery("Transaction.findByCustomerId", Transaction.class)
-                .setParameter("customerId", id).getResultList();
+                .setParameter("customerId", id).setMaxResults(1).getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
@@ -52,7 +63,8 @@ public class TransactionSessionBean implements TransactionService {
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void saveTransaction(Account sourceAccountNo, Account destinationAccountNo, String description, double amount) {
 
-        em.persist(new Transaction(sourceAccountNo, "TRANSFER", amount, description, LocalDateTime.now(), destinationAccountNo));
+        Transaction transfer = new Transaction(sourceAccountNo, "TRANSFER", amount, description, LocalDateTime.now(), destinationAccountNo);
+        em.persist(transfer);
 
     }
 

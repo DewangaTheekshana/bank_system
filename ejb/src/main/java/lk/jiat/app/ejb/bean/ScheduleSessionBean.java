@@ -28,4 +28,19 @@ public class ScheduleSessionBean implements ScheduleService {
     public List<Scheduled_Transfer> getActiveSchedules(ScheduledStatusType statusType) {
         return em.createNamedQuery("Scheduled.findByActiveSchedule", Scheduled_Transfer.class).setParameter("status", statusType).getResultList();
     }
+
+    @Override
+    public List<Scheduled_Transfer> getScheduleTransactionsByAccountId(Long accountId, String email) {
+        return em.createNamedQuery("Scheduled.findByAccountIdAndEmail", Scheduled_Transfer.class).setParameter("accountId", accountId).setParameter("email", email).setParameter("status",ScheduledStatusType.ACTIVE).getResultList();
+    }
+
+    @Override
+    public Scheduled_Transfer getScheduleTransactionById(Long transactionId) {
+        return em.find(Scheduled_Transfer.class, transactionId);
+    }
+
+    @Override
+    public void updateSchedule(Scheduled_Transfer scheduledTransfer) {
+        em.merge(scheduledTransfer);
+    }
 }
