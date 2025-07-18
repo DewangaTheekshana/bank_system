@@ -91,13 +91,13 @@
                 <td>
                     <c:choose>
                         <c:when test="${user.customer.status eq 'ACTIVE'}">
-                            <form action="${pageContext.request.contextPath}/changeUserStatus" method="post">
+                            <form action="${pageContext.request.contextPath}/admin/changeUserStatus" method="post">
                                 <input type="hidden" name="userEmail" value="${user.customer.email}">
                                 <input type="submit" name="status" value="Active">
                             </form>
                         </c:when>
                         <c:otherwise>
-                            <form action="${pageContext.request.contextPath}/changeUserStatus" method="post">
+                            <form action="${pageContext.request.contextPath}/admin/changeUserStatus" method="post">
                                 <input type="hidden" name="userEmail" value="${user.customer.email}">
                                 <input type="submit" name="status" value="Inactive">
                             </form>

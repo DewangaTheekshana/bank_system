@@ -13,7 +13,7 @@ import lk.jiat.app.core.service.UserService;
 
 import java.io.IOException;
 
-@WebServlet("/changeUserStatus")
+@WebServlet("/admin/changeUserStatus")
 public class ChangeUserStatus extends HttpServlet {
 
     @EJB

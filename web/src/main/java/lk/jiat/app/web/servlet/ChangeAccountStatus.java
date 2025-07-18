@@ -11,7 +11,7 @@ import lk.jiat.app.core.service.AccountService;
 
 import java.io.IOException;
 
-@WebServlet("/changeAccountStatus")
+@WebServlet("/admin/changeAccountStatus")
 public class ChangeAccountStatus extends HttpServlet {
 
     @EJB

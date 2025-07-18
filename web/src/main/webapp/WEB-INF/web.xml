@@ -33,9 +33,13 @@
     </security-role>
 
     <error-page>
-<!--        <error-code>404</error-code>-->
         <exception-type>lk.jiat.app.core.exception.LoginFailedException</exception-type>
         <location>/login_error.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404_error.jsp</location>
     </error-page>
 
 </web-app>

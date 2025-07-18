@@ -69,7 +69,7 @@
         <div style="background:#fff; margin:10% auto; padding:20px; width:300px; border-radius:5px; position:relative;">
             <h3>Change Password</h3>
 
-            <form action="${pageContext.request.contextPath}/changePassword" method="post">
+            <form action="${pageContext.request.contextPath}/user/changePassword" method="post">
                 <input type="password" name="currentPassword" placeholder="Current password" required><br><br>
                 <input type="password" name="newPassword" placeholder="New password" required><br><br>
                 <input type="password" name="confirmPassword" placeholder="Confirm password" required><br><br>

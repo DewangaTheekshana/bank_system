@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-@WebServlet("/registerCustomer")
+@WebServlet("/admin/registerCustomer")
 public class RegisterCustomer extends HttpServlet {
 
     @EJB

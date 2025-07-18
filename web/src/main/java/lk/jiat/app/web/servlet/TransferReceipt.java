@@ -14,7 +14,7 @@ import lk.jiat.app.core.service.TransactionService;
 
 import java.io.IOException;
 
-@WebServlet("/transferReceipt")
+@WebServlet("/user/transferReceipt")
 public class TransferReceipt extends HttpServlet {
 
     @EJB

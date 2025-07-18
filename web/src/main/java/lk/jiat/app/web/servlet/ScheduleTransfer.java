@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet("/schedule_transfer")
+@WebServlet("/user/schedule_transfer")
 public class ScheduleTransfer extends HttpServlet {
 
     @EJB

@@ -12,7 +12,7 @@ import lk.jiat.app.core.util.Encryption;
 
 import java.io.IOException;
 
-@WebServlet("/changePassword")
+@WebServlet("/user/changePassword")
 public class ChangePassword extends HttpServlet {
 
     @EJB

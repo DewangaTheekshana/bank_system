@@ -44,9 +44,10 @@ public class Login extends HttpServlet {
 
         User user = userService.getUserByEmail(email);
 
-        if (user.getCustomer().getStatus().equals(Status.ACTIVE)) {
 
-            if (status == AuthenticationStatus.SUCCESS) {
+        if (status == AuthenticationStatus.SUCCESS) {
+
+            if (user.getCustomer().getStatus().equals(Status.ACTIVE)) {
 
                 if (user.getUserType() == UserType.ADMIN) {
                     request.getSession().setAttribute("admin", user);
@@ -59,15 +60,16 @@ public class Login extends HttpServlet {
                     throw new LoginFailedException("Inactive User");
                 }
 
-
             } else {
-                throw new LoginFailedException("Invalid email or password");
+                request.getSession().invalidate();
+                throw new LoginFailedException("Inactive User");
             }
 
+
         } else {
-            request.getSession().invalidate();
-            throw new LoginFailedException("Invalid User Role");
+            throw new LoginFailedException("Invalid email or password");
         }
+
 
     }
 }

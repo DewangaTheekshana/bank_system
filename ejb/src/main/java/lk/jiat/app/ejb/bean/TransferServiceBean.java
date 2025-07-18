@@ -1,7 +1,10 @@
 package lk.jiat.app.ejb.bean;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.*;
 import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.*;
@@ -22,8 +25,9 @@ public class TransferServiceBean implements TransferService {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
+    @Interceptors({TransferLoggingInterceptor.class})
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @Override
     public void transferAmount(String sourceAccountNo, String destinationAccountNo, String description, double amount) {
 
         Account senderAccount = accountService.getAccountByAccountNumber(sourceAccountNo);

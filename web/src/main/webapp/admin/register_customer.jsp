@@ -57,7 +57,7 @@
 
 <h1>Register Customer</h1>
 
-<form action="${pageContext.request.contextPath}/registerCustomer" method="post">
+<form action="${pageContext.request.contextPath}/admin/registerCustomer" method="post">
     <div class="form-group">
         <label for="firstName">First Name:</label>
         <input type="text" name="firstName" id="firstName" required>

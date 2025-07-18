@@ -9,13 +9,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "audit_log")
 public class Audit implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     private String action;
     private LocalDateTime timestamp;
@@ -24,8 +21,7 @@ public class Audit implements Serializable{
 
     public Audit() {}
 
-    public Audit(User user, String action, LocalDateTime timestamp, Boolean success, String details) {
-        this.user = user;
+    public Audit(String action, LocalDateTime timestamp, Boolean success, String details) {
         this.action = action;
         this.timestamp = timestamp;
         this.success = success;
@@ -41,14 +37,6 @@ public class Audit implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getAction() {

@@ -35,7 +35,7 @@
     %>
 
 
-    <form action="${pageContext.request.contextPath}/schedule_transfer" method="post">
+    <form action="${pageContext.request.contextPath}/user/schedule_transfer" method="post">
 
 
         <p>Source Account No</p>

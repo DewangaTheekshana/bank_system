@@ -15,7 +15,7 @@ import lk.jiat.app.core.service.TransferService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/transfer")
+@WebServlet("/user/transfer")
 public class Transfer extends HttpServlet {
 
     @EJB

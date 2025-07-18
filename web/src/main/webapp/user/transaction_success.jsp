@@ -35,7 +35,7 @@
 %>
 
 <p>
-    <a href="<%= request.getContextPath() %>/transferReceipt?id=<%= txnId %>">Download Receipt</a>
+    <a href="<%= request.getContextPath() %>/user/transferReceipt?id=<%= txnId %>">Download Receipt</a>
 </p>
 
 <p>

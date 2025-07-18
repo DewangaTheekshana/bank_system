@@ -58,7 +58,7 @@
                     }
                 " href="${pageContext.request.contextPath}/user/schedule_transfer.jsp">Schedule Transfer</a>
 
-<form action="${pageContext.request.contextPath}/transfer" method="post">
+<form action="${pageContext.request.contextPath}/user/transfer" method="post">
 
 
     <p>Source Account No</p>
